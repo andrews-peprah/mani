@@ -1,0 +1,2 @@
+module Base::TokenHelper
+end

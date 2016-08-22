@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  password: MyString
+  pin_code: MyString
+  is_active: false
+  is_archive: false
+
+two:
+  first_name: MyString
+  last_name: MyString
+  password: MyString
+  pin_code: MyString
+  is_active: false
+  is_archive: false
