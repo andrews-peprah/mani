@@ -1,0 +1,2 @@
+module Customer::UniqueFieldHelper
+end

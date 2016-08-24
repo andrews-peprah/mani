@@ -71,7 +71,7 @@ gem 'carrierwave'
 gem 'sidekiq'
 
 # Behaviour Driven development
-gem 'rspec'
+gem "rspec-rails", :group => [:development, :test]
 
 # Doorkeeper for oauth
 gem 'doorkeeper'

@@ -40,7 +40,14 @@ class Customer::LoginController < CustomerController
         success: true,
         response: {          
           type: "successful_login",
-          message: "You have successfully logged in"
+          message: "You have successfully logged in",
+          customer: { 
+                      first_name: customer.first_name,
+                      last_name:  customer.last_name,
+                      username:   customer.username,
+                      telephone:  customer.telephone,
+                      reference:  customer.reference.value
+                    }
         }
       }
     else

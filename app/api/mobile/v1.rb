@@ -27,6 +27,7 @@ module Mobile
 
     # Login resource for authentication
     # @params from the client specs
+    # @return nil
     resource :customer_login do
       desc "Uses the customer username and password to login"
 
@@ -53,12 +54,72 @@ module Mobile
     end
 
     # Profile resource 
+    # @params nil
+    # @return nil
     resource :me do
       desc "Returns details of client"
       
       get do
-        puts "hellow world"
+        return 
+          { success: true,
+            response: {
+              type: "access_granted",
+              message: "You have an unexpired token"
+                  }
+              }
       end
     end
+
+    # Return a random customer's reference for 
+    # customer's easy registration
+    # @params nil
+    # @return nil
+    resource :random_reference do
+      desc "Returns random reference number"
+
+      get do 
+        customer = CustomerController.new
+        result = customer.get_random_reference(current_user)
+        puts result
+        return result
+      end
+
+    end
+
+
+    # Resource for customer
+    # @params nil
+    # @reurns hash
+    resource :customers do
+      desc "Creates a new user"
+
+      params do
+        requires :first_name, type: String, desc: "First name of customer"
+        requires :last_name,  type: String, desc: "Last name of customer"
+        requires :username,   type: String, desc: "Username of customer"
+        requires :telephone,  type: String, desc: "Telephone/ msisdn of customer"
+        requires :password,   type: String, desc: "Password of customer"
+        requires :reference,  type: String, desc: "Parent's reference"
+      end
+
+      post do
+        puts params
+        
+        uniquefield = Customer::UniqueFieldController.new
+        result = uniquefield.index(current_user,params)
+        
+        if result[:success]
+          customer = CustomerController.new
+          result = customer.create(current_user,params)
+        end
+
+
+        return result
+      end
+
+    end
+
+
+
   end
 end

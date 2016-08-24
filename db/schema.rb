@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160822105048) do
+ActiveRecord::Schema.define(version: 20160824131437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20160822105048) do
     t.string   "pin_code"
     t.integer  "client_id"
     t.string   "username"
+    t.boolean  "random_selected", default: false
     t.index ["id"], name: "index_customers_on_id", using: :btree
   end
 
@@ -146,12 +147,27 @@ ActiveRecord::Schema.define(version: 20160822105048) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
   end
 
+  create_table "parents", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.integer  "parent_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "privileges", force: :cascade do |t|
     t.string   "name"
     t.string   "keys"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_privileges_on_id", using: :btree
+  end
+
+  create_table "references", force: :cascade do |t|
+    t.string   "value",       default: ""
+    t.integer  "customer_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["id"], name: "index_references_on_id", using: :btree
   end
 
   create_table "services", force: :cascade do |t|
@@ -163,6 +179,12 @@ ActiveRecord::Schema.define(version: 20160822105048) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.index ["id"], name: "index_services_on_id", using: :btree
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tokens", force: :cascade do |t|
