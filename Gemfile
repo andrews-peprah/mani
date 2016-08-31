@@ -84,3 +84,9 @@ gem 'http'
 
 # Unique ID gem for unique identification
 gem 'uuid'
+
+# GCM for push notification
+gem 'gcm'
+
+# Figaro gem for environment variables
+gem 'figaro'

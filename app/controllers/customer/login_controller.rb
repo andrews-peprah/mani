@@ -42,11 +42,15 @@ class Customer::LoginController < CustomerController
           type: "successful_login",
           message: "You have successfully logged in",
           customer: { 
+                      id:         customer.id,
                       first_name: customer.first_name,
                       last_name:  customer.last_name,
                       username:   customer.username,
                       telephone:  customer.telephone,
-                      reference:  customer.reference.value
+                      reference:  customer.reference.value,
+                      is_verified: customer.is_verified,
+                      level:      customer.level,
+                      people:     customer.children.size
                     }
         }
       }

@@ -12,6 +12,18 @@ class Customer::UniqueFieldController < CustomerController
 
 			# if reference is present
 			if reference.present?
+				#check whether the customer holding the reference is verified
+				reference = reference.first
+				if reference.customer.is_verified?
+				else
+					return {
+						success: false,
+						response: {
+							type: "reference_not_verified",
+							message: "Reference number hasn't paid"
+						}
+				}
+				end
 			else
 				return {
 						success: false,
@@ -26,7 +38,7 @@ class Customer::UniqueFieldController < CustomerController
 
 		# Search for telephone number
 		if params[:telephone].present?
-			telephone = Customer.where(telephone: params[:telephone], 
+			telephone = Customer.where(telephone: params[:telephone],
 																username: params[:telephone])
 
 			if telephone.present?
@@ -34,9 +46,19 @@ class Customer::UniqueFieldController < CustomerController
 						success: false,
 						response: {
 							type: "telephone_exists",
-							message: "Username or telephone exists"
+							message: "Telephone number is already used"
 						}
 				}
+			end
+
+			if Mani::Provider.get(params[:telephone]) == false
+				return {
+						success: false,
+						response: {
+							type: "provider_unsupported",
+							message: "Please provide only MTN or Tigo numbers"
+						}
+					}
 			end
 		end
 

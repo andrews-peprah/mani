@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824131437) do
+ActiveRecord::Schema.define(version: 20160831100414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 20160824131437) do
     t.integer  "client_id"
     t.string   "username"
     t.boolean  "random_selected", default: false
+    t.boolean  "is_verified",     default: false
+    t.string   "pay_token",       default: ""
     t.index ["id"], name: "index_customers_on_id", using: :btree
   end
 
@@ -154,6 +156,13 @@ ActiveRecord::Schema.define(version: 20160824131437) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "parentships", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.integer  "child_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "privileges", force: :cascade do |t|
     t.string   "name"
     t.string   "keys"
@@ -168,6 +177,13 @@ ActiveRecord::Schema.define(version: 20160824131437) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.index ["id"], name: "index_references_on_id", using: :btree
+  end
+
+  create_table "registered_devices", force: :cascade do |t|
+    t.string   "gcm_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "customer_id"
   end
 
   create_table "services", force: :cascade do |t|
