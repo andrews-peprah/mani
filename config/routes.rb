@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   post 'api/v1/login' => 'doorkeeper/tokens#create'
 
+  resources :base
   # Root path base controller
   root controller: :base, action: :index
 end

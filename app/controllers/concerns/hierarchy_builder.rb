@@ -18,24 +18,20 @@ module HierarchyBuilder
 
       # Associate child customer to parent
       hierarchy = parent_customer.parentship.build(:child_id => customer.id)
-      
-      # Notify parent
-      message = {
-        is_money: false,
-        message: "You are on you way to greatness. Another member has just been added to your hierarchy. Hurray!!",
-        title: "Another member has been added to your hierarchy. Hurray!!!"
-      }
-
-      Mani::GcmNotifier.notify(parent_customer,message,"member_added")
 
       # Save hierarchy
       if hierarchy.save
-        success_msg
-      else
-        error_msg
+        # Set paren hierarchy in customer's details
+        customer_reference = customer.reference
+        customer_reference.parent_reference = params[:reference]
+        if customer_reference.save
+          return success_msg
+        end
       end
-
+      
+      error_msg
     end
+
   end
 
 

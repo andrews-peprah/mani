@@ -5,7 +5,7 @@ class Customer::LoginController < CustomerController
   def create(data = nil)
     # Fetch client login parameters based on login
     # Information presented
-    
+
     # If client is available get all customers
     customers = data[:client].customers
 
@@ -19,7 +19,7 @@ class Customer::LoginController < CustomerController
         }
       }
     end
-    
+
     #If there are customers search for customer
     customer = customers.where(username: data[:username]).first
 
@@ -38,10 +38,10 @@ class Customer::LoginController < CustomerController
     if customer.authenticate(data[:password])
       return {
         success: true,
-        response: {          
+        response: {
           type: "successful_login",
           message: "You have successfully logged in",
-          customer: { 
+          customer: {
                       id:         customer.id,
                       first_name: customer.first_name,
                       last_name:  customer.last_name,
@@ -50,7 +50,7 @@ class Customer::LoginController < CustomerController
                       reference:  customer.reference.value,
                       is_verified: customer.is_verified,
                       level:      customer.level,
-                      people:     customer.children.size
+                      people:     customer.children.where(is_verified: true).size
                     }
         }
       }

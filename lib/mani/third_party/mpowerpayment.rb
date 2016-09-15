@@ -153,6 +153,8 @@ module Mani
                                       message,
                                       "paid")
 
+            recalculate_parent_amount(customer)
+
             result = {
                       success: true,
                       response: {
@@ -209,7 +211,31 @@ module Mani
         return result
       end
 
-      module_function :receive_payment, :send_payment, :check_status
+      def recalculate_parent_amount(customer)
+        parent_reference = customer.reference.parent_reference
+
+        if parent_reference.present?
+          reference = Reference.find_by(value: parent_reference)
+          if reference.present?
+            # Get customer
+            customer = reference.customer
+
+            # Calculate the amount in the current level
+            customer.calculate_funds
+
+            # Notify parent
+            message = {
+              is_money: false,
+              message: "You are on you way to greatness. Another member has just been added to your hierarchy. Hurray!!",
+              title: "Another member has been added to your hierarchy. Hurray!!!"
+            }
+
+            Mani::GcmNotifier.notify(customer,message,"member_added")
+          end
+        end
+      end
+
+      module_function :receive_payment, :send_payment, :check_status, :recalculate_parent_amount
     end
   end
 end

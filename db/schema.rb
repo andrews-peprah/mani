@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160831100414) do
+ActiveRecord::Schema.define(version: 20160912213158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20160831100414) do
     t.string  "fund",        default: "0"
     t.boolean "is_active",   default: true
     t.boolean "is_archived", default: false
-    t.integer "client_id"
+    t.integer "customer_id"
     t.index ["id"], name: "index_accounts_on_id", using: :btree
   end
 
@@ -172,10 +172,11 @@ ActiveRecord::Schema.define(version: 20160831100414) do
   end
 
   create_table "references", force: :cascade do |t|
-    t.string   "value",       default: ""
+    t.string   "value",            default: ""
     t.integer  "customer_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "parent_reference", default: ""
     t.index ["id"], name: "index_references_on_id", using: :btree
   end
 
