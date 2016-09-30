@@ -44,6 +44,13 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'capistrano'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-figaro-yml', '~> 1.0.2'
+  gem 'capistrano-rvm', github: "capistrano/rvm"
+  gem 'capistrano3-puma'
+  gem 'capistrano-sidekiq', group: :development
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -90,12 +97,3 @@ gem 'gcm'
 
 # Figaro gem for environment variables
 gem 'figaro'
-
-gem 'capistrano'
-gem 'capistrano-bundler', '~> 1.1.2'
-
-# Add this if you're using rbenv
-# gem 'capistrano-rbenv', github: "capistrano/rbenv"
-
-# Add this if you're using rvm
-gem 'capistrano-rvm', github: "capistrano/rvm"
