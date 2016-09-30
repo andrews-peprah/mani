@@ -8,7 +8,48 @@ module LevelCalculatorable
   # Generates the level
   #
   def level
-    get_level(0,self.children.where(is_verified: true).size,0)
+    # get the list of children
+    # and the children for the current child
+    # DIAGRAM
+    #           #
+    #         _/|\__
+    #       #   #   #
+    #     # # # ...  ...
+    @total = 0
+    count_children
+    get_level(0,@total,0)
+  end
+
+  # Gives the total number of children
+  def total_children
+    @total = 0
+    count_children
+    @total
+  end
+
+  # Counts the number of children
+  #
+  def count_children(parent_node = self,level=0)
+    # Check current level if the level is 4 go back one
+    level += 1
+
+    if level <= 4 
+      # Get children nodes
+      nodes = parent_node.children
+
+      if nodes.present?
+        # Add the number of children to total
+        @total += nodes.size
+
+        nodes.each do |node|
+            count_children(node,level)
+        end
+        level -= 1
+      end
+    else
+      level -= 1
+    end
+    @level
   end
 
   # Geneate doorkeeper application for client

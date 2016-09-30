@@ -23,7 +23,6 @@ class Customer < ApplicationRecord
 
   # Calculates the funds for current hierarchy level
   def calculate_funds
-    accounts = self.accounts
     # If customer has an account
     if accounts.present?
       account = accounts.first

@@ -90,3 +90,12 @@ gem 'gcm'
 
 # Figaro gem for environment variables
 gem 'figaro'
+
+gem 'capistrano'
+gem 'capistrano-bundler', '~> 1.1.2'
+
+# Add this if you're using rbenv
+# gem 'capistrano-rbenv', github: "capistrano/rbenv"
+
+# Add this if you're using rvm
+gem 'capistrano-rvm', github: "capistrano/rvm"

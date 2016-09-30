@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/capistrano/rvm.git
+  revision: 9cfef39cf0022839dca6b5b330dfefeb5fc363e7
+  specs:
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -292,7 +300,10 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  capistrano
+  capistrano-bundler (~> 1.1.2)
   capistrano-rails
+  capistrano-rvm!
   carrierwave
   coffee-rails (~> 4.2)
   countries

@@ -152,23 +152,27 @@ module Mobile
       post do
         customers = current_user.customers
         customer = customers.where(id: params[:id])
-        amount = 30
+        amount = 1
 
         if customer.present?
           customer = customer.first
-          return Mani::ThirdParty::Mpowerpayment.receive_payment(customer,amount,true)
+          return Mani::ThirdParty::Floxchange.receive_payment(customer,amount,true)
         end
       end
 
       desc "Get payment status from mPowerPayment"
 
       get do
+        puts "getting payment status"
         customers = current_user.customers
         customer = customers.where(id: params[:id])
-
         if customer.present?
           customer = customer.last
-          return Mani::ThirdParty::Mpowerpayment.check_status(customer,true)
+
+          reference,access_token = customer.pay_token.split("|***|")
+          
+          #return Mani::ThirdParty::Mpowerpayment.check_status(customer,true)
+          return Mani::ThirdParty::Floxchange.check_status(customer,true,access_token,reference)
         end
       end
     end
