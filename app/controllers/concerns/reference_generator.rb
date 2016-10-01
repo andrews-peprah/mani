@@ -24,7 +24,7 @@ module ReferenceGenerator
 
       # Check customer's hierarchy size
       # If they exceed the limit search for another person
-      if customer.children.size = 3
+      if customer.children.size == 3
         get_random_reference(client)
       end
 
