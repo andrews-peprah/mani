@@ -29,7 +29,7 @@ test:
 
 production:
   <<: *default
-  database: ENV['MANI_DB_NAME']
-  username: ENV['MANI_DB_USER']
-  password: ENV['MANI_DB_PASSWORD']
+  database: <%= ENV['MANI_DB_NAME'] %>
+  username: <%= ENV['MANI_DB_USER'] %>
+  password: <%= ENV['MANI_DB_PASSWORD'] %>
   encoding: unicode
