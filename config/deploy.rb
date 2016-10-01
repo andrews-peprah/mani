@@ -9,6 +9,9 @@ set :deploy_to, '/home/oboafo/oboafo.com'
 set :linked_files, %w{config/database.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
+set :bundle_cmd, "/home/oboafo/.rvm/gems/ruby-2.3.1/bin/bundle"
+set :bundle_dir, "/home/oboafo/.rvm/gems/ruby-2.3.1"
+
 namespace :deploy do
 
   desc 'Restart application'
