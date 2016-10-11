@@ -24,3 +24,5 @@
 /config/application.yml
 
 /config/deploy/*
+
+/shared/log/*

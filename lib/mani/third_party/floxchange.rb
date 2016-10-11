@@ -130,6 +130,9 @@ module Mani
         if response[:success]
           case response[:transaction][0]["status"]
           when "Paid"
+            # Check the customer's parent hierarchy and
+            # place the person in the right position
+            
             customer.is_verified = true
             customer.save
 
@@ -145,7 +148,11 @@ module Mani
                                       message,
                                       "paid")
 
+            # Calculate the amount parent needs to get
             recalculate_parent_amount(customer)
+
+            # Build the hierarchy
+            Mani::HierarchyBuilder.rebuild(customer)
 
             result = {
                       success: true,

@@ -37,4 +37,19 @@ class Customer < ApplicationRecord
       calculate_funds
     end
   end
+
+  # Gets the parent record
+  def parent
+    if self.reference.present?
+      parent_reference = Reference.find_by(value: self.reference.parent_reference)
+      if parent_reference.present?
+        Customer.find_by(id: parent_reference.customer_id)
+      end
+    end
+  end
+
+  # Verified children
+  def verified_children
+    self.children.where(is_verified: true)
+  end
 end
