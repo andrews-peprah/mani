@@ -97,3 +97,6 @@ gem 'gcm'
 
 # Figaro gem for environment variables
 gem 'figaro'
+
+# Newrelic to monitor application performance
+gem 'newrelic_rpm'
