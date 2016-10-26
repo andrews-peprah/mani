@@ -39,7 +39,7 @@ module Mobile
       post do
         # Log user in
         # Mobile Login's are always
-        customer_controller = Customer::LoginController.new
+        customer_controller = Customers::LoginController.new
 
         # Create hash and send parameters
         data = {
@@ -104,7 +104,7 @@ module Mobile
 
       post do
         #Check for uniqueness of some fields
-        uniquefield = Customer::UniqueFieldController.new
+        uniquefield = Customers::UniqueFieldController.new
         result = uniquefield.index(current_user,params)
 
         if result[:success]
@@ -131,7 +131,7 @@ module Mobile
       end
 
       post do
-        gcm_controller = Customer::GcmController.new
+        gcm_controller = Customers::GcmController.new
         result = gcm_controller.create(current_user,params)
         return result
       end
@@ -188,7 +188,7 @@ module Mobile
       end
 
       get do
-        customer_profile = Customer::ProfileController.new
+        customer_profile = Customers::ProfileController.new
         profile = customer_profile.index(current_user,params)
         return profile
       end

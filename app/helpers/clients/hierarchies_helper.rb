@@ -1,0 +1,2 @@
+module Clients::HierarchiesHelper
+end

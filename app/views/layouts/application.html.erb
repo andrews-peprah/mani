@@ -4,11 +4,17 @@
     <title>Mani</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'application', media: 'all'%>
   </head>
 
   <body>
+    <div class="container-fluid">
+    <center>
+      <p class="notice" style="color:#fff;"><%= notice %></p>
+      <p class="alert" style="color:#fff;"><%= alert %></p>
+    </center>
     <%= yield %>
+    </div>
+    <%= javascript_include_tag 'application' %>
   </body>
 </html>

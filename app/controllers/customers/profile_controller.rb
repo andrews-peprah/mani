@@ -1,4 +1,4 @@
-class Customer::ProfileController < ClientController
+class Customer::ProfileController < CustomerController
 
   def index(client=nil, params=nil)
 
