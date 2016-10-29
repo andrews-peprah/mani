@@ -152,18 +152,33 @@ module Mobile
       post do
         customers = current_user.customers
         customer = customers.where(id: params[:id])
-        amount = 1
-
+        puts "#{current_user.to_json}"
         if customer.present?
           customer = customer.first
-          return Mani::ThirdParty::Floxchange.receive_payment(customer,amount,true)
+          ThirdParty::PaymentWorker.perform_async(params[:id])
+          return { success: true,
+                   response: {
+                       type: "request_sent",
+                       message: "Request sent to MM wallet. Please check your phone."
+                    }
+                 }
+        else
+          { success: false,
+             response: {
+                 type: "customer_absent",
+                 message: "Customer not found in db."
+              }
+           }
         end
       end
 
-      desc "Get payment status from mPowerPayment"
+      desc "Get payment status from FloXchange"
+
+      params do
+        requires :id, type: String, desc: "Id of customer"
+      end
 
       get do
-        puts "getting payment status"
         customers = current_user.customers
         customer = customers.where(id: params[:id])
         if customer.present?
@@ -173,6 +188,13 @@ module Mobile
           
           #return Mani::ThirdParty::Mpowerpayment.check_status(customer,true)
           return Mani::ThirdParty::Floxchange.check_status(customer,true,access_token,reference)
+        else
+          { success: false,
+             response: {
+                 type: "customer_absent",
+                 message: "Customer not found in db."
+              }
+           }
         end
       end
     end

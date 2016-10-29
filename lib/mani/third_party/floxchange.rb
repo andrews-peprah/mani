@@ -53,13 +53,13 @@ module Mani
                                   amount,access_token)
           response = JSON.parse(response)
           response = response.symbolize_keys
-
+          puts response
           if response[:success]
             if customer.update_attribute(:pay_token,"#{response[:response]["reference"]}|***|#{access_token}")
                  {success: true,
                   response: {
                       type: "request_sent",
-                      message: "Request sent to MM wallet"
+                      message: "Request sent to MM wallet. Please check your phone"
                     }
                  }
             end
@@ -129,12 +129,18 @@ module Mani
         # Check response code and type of response
         if response[:success]
           case response[:transaction][0]["status"]
-          when "Paid"
+          when "Failed"
             # Check the customer's parent hierarchy and
             # place the person in the right position
             
             customer.is_verified = true
             customer.save
+
+            # Build the hierarchy
+            Mani::HierarchyBuilder.rebuild(customer)
+
+            # Calculate the amount parent needs to get
+            recalculate_parent_amount(customer)
 
             # Form message
             message = {
@@ -146,14 +152,7 @@ module Mani
             # Send a notification to the user
             Mani::GcmNotifier.notify( customer,
                                       message,
-                                      "paid")
-
-            # Calculate the amount parent needs to get
-            recalculate_parent_amount(customer)
-
-            # Build the hierarchy
-            Mani::HierarchyBuilder.rebuild(customer)
-
+                                      "paid" )
             result = {
                       success: true,
                       response: {
@@ -162,7 +161,7 @@ module Mani
                         paid: true
                       }
                     }
-          when "Failed"
+          when "Paid"
             # Form message
             message = {
                       title: "Oboafo",
@@ -194,6 +193,7 @@ module Mani
                     }
           end
         else
+          puts response
           result = {
                     success: false,
                     response: {
@@ -210,26 +210,31 @@ module Mani
         return result
       end
 
-      def recalculate_parent_amount(customer)
-        parent_reference = customer.reference.parent_reference
+      def recalculate_parent_amount(customer,level = 0)
+        level += 1
 
-        if parent_reference.present?
-          reference = Reference.find_by(value: parent_reference)
-          if reference.present?
-            # Get customer
-            customer = reference.customer
+        if level > 4
 
-            # Calculate the amount in the current level
-            customer.calculate_funds
+        else
+          parent_customer = customer.parent
 
-            # Notify parent
-            message = {
-              is_money: false,
-              message: "You are on you way to greatness. Another member has just been added to your hierarchy. Hurray!!",
-              title: "Another member has been added to your hierarchy. Hurray!!!"
-            }
+          if parent_customer.present?
+            
+              parent_customer.calculate_funds
 
-            Mani::GcmNotifier.notify(customer,message,"member_added")
+              # Notify parent
+              message = {
+                is_money: false,
+                message: "You are on you way to greatness. Another member has just been added to your hierarchy. Hurray!!",
+                title: "Another member has been added to your hierarchy. Hurray!!!"
+              }
+
+              Mani::GcmNotifier.notify(parent_customer,message,"member_added")
+
+              # Recalculate all parent's account till the level is 4
+              # If no customer is found, obviously this method will
+              # not be called
+              recalculate_parent_amount(parent_customer,level)
           end
         end
       end

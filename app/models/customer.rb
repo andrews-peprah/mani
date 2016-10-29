@@ -48,6 +48,17 @@ class Customer < ApplicationRecord
     end
   end
 
+  # Set the parent value
+  def parent=(parent_customer)
+    reference_value = parent_customer.reference.value
+
+    if self.reference.present?
+      r = self.reference
+      r.parent_reference = reference_value
+      r.save
+    end
+  end
+
   # Verified children
   def verified_children
     self.children.where(is_verified: true)

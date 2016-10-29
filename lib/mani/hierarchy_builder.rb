@@ -3,7 +3,7 @@ module Mani
     # TODO: Put into a worker
     # Sends notification to customer
     def rebuild(customer)
-      # Get customer's parent reference
+      # Get customer's parent
       parent_customer = customer.parent
 
       if parent_customer.present?
@@ -25,10 +25,19 @@ module Mani
         # If the parent_customer is present
         # get the children under customer
         # excluding the customer himself
-        siblings = parent_customer.children.where.not(id: customer.id)
+        siblings = parent_customer.verified_children.where.not(id: customer.id)
 
         if siblings.present?
-          #
+          # Pick one sibling and assign the customer to sibling
+          sibling = siblings.first
+          
+          # remove relationship between customer and parent
+          parent_customer.children.delete(customer)
+
+          puts "puts change parent called"
+          # assigning customer to sibling
+          sibling.children << customer
+          customer.parent = sibling
         end
       end
     end

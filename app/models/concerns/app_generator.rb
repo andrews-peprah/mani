@@ -14,8 +14,8 @@ module AppGenerator
   # @return null
   def generate_app
     # Use doorkeeper to generate application
-    doorkeeper_app = Doorkeeper::Application.new :name => self.company, :redirect_uri => "urn:ietf:wg:oauth:2.0:oob"
-    doorkeeper_app.owner = self
-    doorkeeper_app.save
+    app = Doorkeeper::Application.new :name => self.company, :redirect_uri => "urn:ietf:wg:oauth:2.0:oob"
+    app.owner = self
+    app.save
   end
 end
