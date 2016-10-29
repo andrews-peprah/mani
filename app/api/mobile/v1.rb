@@ -147,28 +147,41 @@ module Mobile
 
       params do
         requires :id, type: String, desc: "Id of customer"
+        optional :retrieve, type: Boolean, desc: "Boolean issues CashIn"
       end
 
       post do
+        # Issue a cashout out of customer's account
         customers = current_user.customers
         customer = customers.where(id: params[:id])
-        puts "#{current_user.to_json}"
         if customer.present?
           customer = customer.first
-          ThirdParty::PaymentWorker.perform_async(params[:id])
-          return { success: true,
-                   response: {
-                       type: "request_sent",
-                       message: "Request sent to MM wallet. Please check your phone."
-                    }
-                 }
+          retrieve = params[:retrieve] || false
+          if retrieve
+            # Send money to customer's account
+            ThirdParty::PaymentOutWorker.perform_async(params[:id])
+            return { success: true,
+                     response: {
+                         type: "request_sent",
+                         message: "Your money would be sent to you soon. Keep using Oboafo and win more."
+                      }
+                   }
+          else
+            ThirdParty::PaymentWorker.perform_async(params[:id])
+            return { success: true,
+                     response: {
+                         type: "request_sent",
+                         message: "Request sent to MM wallet. Please check your phone."
+                      }
+                   }
+          end
         else
           { success: false,
              response: {
                  type: "customer_absent",
                  message: "Customer not found in db."
               }
-           }
+          }
         end
       end
 
@@ -201,7 +214,7 @@ module Mobile
 
     # Profile Endpoint
     # POST: Update profile ~ Change pin
-    # GET:  Retrieves profile
+    # GET: Retrieves profile
     resource :profile do
       desc "Get the profile information"
 

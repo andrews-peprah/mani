@@ -33,6 +33,7 @@ module Mani
 
 
       end
+
       # receive payment from the customer
       # telephone (mobile money)
       #
@@ -49,11 +50,11 @@ module Mani
         if response[:access_token]
           access_token = response[:access_token]
           # Request was successful
-          response = send_payment(customer,
+          response = http_request(customer,
                                   amount,access_token)
           response = JSON.parse(response)
           response = response.symbolize_keys
-          puts response
+
           if response[:success]
             if customer.update_attribute(:pay_token,"#{response[:response]["reference"]}|***|#{access_token}")
                  {success: true,
@@ -82,10 +83,66 @@ module Mani
         end
       end
 
+      # receive payment from the customer
+      # telephone (mobile money)
+      #
+      # curl sample
+      # ==================================================
+      #
+      def send_payment(customer,amount,live=false)
+        response = get_access_token
+
+        # Update customer's account with payment token
+        response = JSON.parse(response)
+        response = response.symbolize_keys
+
+        if response[:access_token]
+          access_token = response[:access_token]
+          # Request was successful
+          response = http_request(customer,
+                                  amount,access_token)
+          response = JSON.parse(response)
+          response = response.symbolize_keys
+
+          if response[:success]
+            # Update customer's account
+            acc = customer.accounts.last
+            acc.update_attribute(:fund, "0") # TODO: you need to subtract the money sent
+            puts "#{acc.to_json}"
+            
+            if customer.update_attribute(:pay_token,"")
+
+                 {success: true,
+                  response: {
+                      type: "request_sent",
+                      message: "Thank you for using Oboafo. Your money would be sent instantly."
+                    }
+                 }
+            end
+          else
+             {success: false,
+              response: {
+                 type: "wrong_params",
+                 message: "Please check your telephone number. Make sure it is MTN, Airtel or Tigo"
+              }
+             }
+          end
+        else
+          return {
+              success: false,
+              response: {
+                type: "request_failed",
+                message: "Something went wrong"
+              }
+            }
+        end
+      end
+
+
 
       # Send money to the customer
       # telephone (mobile money)
-      def send_payment(customer,amount,access_token)
+      def http_request(customer,amount,access_token,send_payment = true)
 
         request_body = {
                 "amount": amount,
@@ -98,10 +155,32 @@ module Mani
                 "dummy": false
         }
 
+
+        if send_payment
+          # Check whether customer has that amount of money
+          acc = customer.accounts.last
+
+          unless amount.to_i <= acc.fund.to_i
+            amount = 0
+          end
+
+          # Set parameters
+          request_body["service_code"] = "cashin"
+          request_body["opt_token"] = true
+          request_body["sender_amount"] = amount
+          request_body["sender_currency"] = "GHS"
+          request_body["recipient_amount"] = amount
+          request_body["recipient_currency"] = "GHS"
+          request_body["recipient_no"] = customer.telephone
+          
+          response = HTTP
+              .post("https://api.floxchange.com/api/v1/transfer.json?access_token=#{access_token}",
+                    :json => request_body)
+        else
           response = HTTP
               .post("https://api.floxchange.com/api/v1/receive.json?access_token=#{access_token}",
                     :json => request_body)
-
+        end
       end
 
 
@@ -129,7 +208,7 @@ module Mani
         # Check response code and type of response
         if response[:success]
           case response[:transaction][0]["status"]
-          when "Failed"
+          when "Paid"
             # Check the customer's parent hierarchy and
             # place the person in the right position
             
@@ -161,7 +240,7 @@ module Mani
                         paid: true
                       }
                     }
-          when "Paid"
+          when "Failed"
             # Form message
             message = {
                       title: "Oboafo",
@@ -193,7 +272,6 @@ module Mani
                     }
           end
         else
-          puts response
           result = {
                     success: false,
                     response: {
@@ -239,7 +317,7 @@ module Mani
         end
       end
 
-      module_function :receive_payment, :send_payment, :check_status, :recalculate_parent_amount, :get_access_token
+      module_function :receive_payment, :send_payment, :http_request, :check_status, :recalculate_parent_amount, :get_access_token
     end
   end
 end

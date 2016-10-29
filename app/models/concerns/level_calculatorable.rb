@@ -35,7 +35,7 @@ module LevelCalculatorable
 
     if level <= 4 
       # Get children nodes
-      nodes = parent_node.children
+      nodes = parent_node.verified_children
 
       if nodes.present?
         # Add the number of children to total

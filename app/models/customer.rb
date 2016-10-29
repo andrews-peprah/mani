@@ -16,6 +16,9 @@ class Customer < ApplicationRecord
   include LevelCalculatorable
   include AccountGeneratable
 
+  validates_uniqueness_of :telephone, :message => "Telephone has already been taken"
+  validates_uniqueness_of :email, :message => "Email has already been taken"
+  
   # sends fullname
   def fullname
     "#{self.first_name} #{self.last_name}"
