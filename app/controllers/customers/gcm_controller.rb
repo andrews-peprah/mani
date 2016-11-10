@@ -1,4 +1,4 @@
-class Customer::GcmController < CustomerController
+class Customers::GcmController < CustomerController
 
   # Registers a new device on the system
   # GOOGLE CLOUD MESSENGER

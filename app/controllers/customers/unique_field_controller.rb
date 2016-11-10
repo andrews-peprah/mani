@@ -1,4 +1,4 @@
-class Customer::UniqueFieldController < CustomerController
+class Customers::UniqueFieldController < CustomerController
 
 	# Checks whether the fields provided are unqiue
 	# @params client

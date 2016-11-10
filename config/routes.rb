@@ -12,9 +12,17 @@ Rails.application.routes.draw do
   # Root path base controller
   root controller: :base, action: :index
 
-  resources :admins
-  resources :clients, only: [:index]
+  resources :admins, only: [:index]
+  namespace :admins do
+    resources :accounts
+    resources :hierarchies
+    resources :members
+    resources :profiles
+    resources :settings
+    resources :transactions
+  end
 
+  resources :clients, only: [:index]
   namespace :clients do
     resources :customers
     resources :hierarchies

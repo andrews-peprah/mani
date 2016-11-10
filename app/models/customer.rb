@@ -17,7 +17,7 @@ class Customer < ApplicationRecord
   include AccountGeneratable
 
   validates_uniqueness_of :telephone, :message => "Telephone has already been taken"
-  validates_uniqueness_of :email, :message => "Email has already been taken"
+  validates_uniqueness_of :username, :message => "Username has already been taken"
   
   # sends fullname
   def fullname

@@ -4,7 +4,7 @@ class Clients::CustomersController < ClientsController
   # @param nil
   # @return nil
   def index
-
+    @customers = current_client.customers
   end
 
   def show

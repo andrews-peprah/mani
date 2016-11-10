@@ -1,2 +1,2 @@
-class Customer::ParentController < CustomerController
+class Customers::ParentController < CustomerController
 end

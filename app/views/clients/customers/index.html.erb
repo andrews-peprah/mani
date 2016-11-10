@@ -7,7 +7,7 @@
 					<div class="col-md-9"></div>
 					<div class="col-md-3">
 						<form method="get">
-							<input type='text' name="q" placeholder="Search Customer..." class="form-control" />
+							<input type='text' name="q" placeholder="Search Member..." class="form-control" />
 						</form>
 					</div>
 				</div><br>
@@ -20,9 +20,14 @@
 							<tr><td><%= cnt += 1 %></td>
 								<td><%= customer.fullname %></td>
 								<td><%= customer.level %></td>
-								<td>Ghs2000</td>
-								<td>8adDb</td>
-								<td><a href="#" class="btn btn-warning btn-xs">Disable</a> | 
+								<td>Ghs<%= customer.accounts.first.fund %></td>
+								<td><%= customer.reference.value %></td>
+								<td>
+									<% if customer.is_verified %>
+									<a href="#" class="btn btn-warning btn-xs">Disable</a> 
+									<% else %>
+									<a href="#" class="btn btn-success btn-xs">Enable</a>
+									<% end %> | 
 									<a href="#" class="btn btn-danger btn-xs">Delete</a>
 								</td>
 							</tr>

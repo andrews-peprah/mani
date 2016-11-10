@@ -1,4 +1,4 @@
-class Customer::LoginController < CustomerController
+class Customers::LoginController < CustomerController
 
   # Creates a new login for customer
   # @params login parameters
