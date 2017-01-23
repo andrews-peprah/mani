@@ -39,7 +39,7 @@ module Mobile
       post do
         # Log user in
         # Mobile Login's are always
-        customer_controller = Customer::LoginController.new
+        customer_controller = Customers::LoginController.new
 
         # Create hash and send parameters
         data = {

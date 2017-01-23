@@ -100,7 +100,7 @@ module Mani
           access_token = response[:access_token]
           # Request was successful
           response = http_request(customer,
-                                  amount,access_token)
+                                  amount,access_token,true)
           response = JSON.parse(response)
           response = response.symbolize_keys
 
@@ -142,7 +142,7 @@ module Mani
 
       # Send money to the customer
       # telephone (mobile money)
-      def http_request(customer,amount,access_token,send_payment = true)
+      def http_request(customer,amount,access_token,send_payment = false)
 
         request_body = {
                 "amount": amount,
