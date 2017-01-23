@@ -13,7 +13,7 @@ module Mani
         data = {registration_ids: registration_ids,
                 options: options}
 
-        ThirdParty::SendGcm.perform_async(data)
+        NotificationWorker::SendGcmWorker.perform_async(data)
       end
     end
 

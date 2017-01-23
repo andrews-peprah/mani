@@ -276,7 +276,7 @@ module Mani
                     success: false,
                     response: {
                       type: "error_request",
-                      message: "Please try again",
+                      message: "Please try again. Make sure you have Ghs30.0 for the registration on your mobile money wallet.",
                       paid: false
                     }
                   }
