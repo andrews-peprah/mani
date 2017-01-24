@@ -5,10 +5,11 @@ lock '3.7.1'
 set :application, 'mani'
 set :repo_url, 'git@bitbucket.org:andrewspeprah1/mani.git'
 set :linked_files, %w{config/database.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 set :bundle_dir, "/home/oboafo/.rvm/gems/ruby-2.3.1"
 set :bundle_cmd, "/home/oboafo/.rvm/gems/ruby-2.3.1/bin/bundle"
+set :bundle_binstubs, nil
 
 
 set :user,            'oboafo'
