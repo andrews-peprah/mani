@@ -13,12 +13,17 @@
 				</div><br>
 
 				<table class="table table-striped">
-					<tr><td>#</td><td>Name</td><td>Level</td><td>Amount Earned</td><td>Reference</td><td>Options</td></tr>
+					<tr><td>#</td><td>Name</td><td>Parent</td><td>Children</td><td>Level</td><td>Amount Earned</td><td>Reference</td><td>Options</td></tr>
 					<% if @customers.present? %>
 						<% 	cnt = 0
 							@customers.each do |customer| %>
 							<tr><td><%= cnt += 1 %></td>
 								<td><%= customer.fullname %></td>
+								<td><%= customer.parent.try(:fullname) %></td>
+								<td><% customer.children.each do |child| %>
+									<p><%= child.fullname %></p>
+									<% end %>
+								</td>
 								<td><%= customer.level %></td>
 								<td>Ghs<%= customer.accounts.first.fund %></td>
 								<td><%= customer.reference.value %></td>
