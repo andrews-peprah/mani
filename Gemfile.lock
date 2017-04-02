@@ -138,6 +138,7 @@ GEM
       virtus (>= 1.0.0)
     gritter (1.2.0)
     hashie (3.4.4)
+    hirb (0.7.3)
     http (2.0.2)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -331,6 +332,7 @@ DEPENDENCIES
   gcm
   grape
   gritter
+  hirb
   http
   jbuilder (~> 2.5)
   jquery-rails

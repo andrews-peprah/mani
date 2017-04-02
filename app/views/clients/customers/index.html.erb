@@ -23,11 +23,14 @@
 								<td>Ghs<%= customer.accounts.first.fund %></td>
 								<td><%= customer.reference.value %></td>
 								<td>
+									<%= form_tag toggle_clients_customer_url(customer), method: :post,
+										style: "display:inline;",
+										onsubmit: "return confirm('Are you sure you want to change customers state?')" %>
 									<% if customer.is_verified %>
-									<a href="#" class="btn btn-warning btn-xs">Disable</a> 
+										<input type="submit" class="btn btn-warning btn-xs" value="Disable" />
 									<% else %>
-									<a href="#" class="btn btn-success btn-xs">Enable</a>
-									<% end %> | 
+										<input type="submit" class="btn btn-success btn-xs" value="Enable" />
+									<% end %> </form>| 
 									<a href="#" class="btn btn-danger btn-xs">Delete</a>
 								</td>
 							</tr>

@@ -18,3 +18,12 @@
 	background: #fff;
 	padding: 20px;
 }
+
+.login-form center h2{
+	text-align: center;
+	font-weight: bolder;
+}
+
+.login-form label{
+	text-align: left;
+}

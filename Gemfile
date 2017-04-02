@@ -100,3 +100,4 @@ gem 'figaro'
 
 # Newrelic to monitor application performance
 gem 'newrelic_rpm'
+gem 'hirb'

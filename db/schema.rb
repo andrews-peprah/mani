@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026171944) do
+ActiveRecord::Schema.define(version: 20170402175334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,18 +105,19 @@ ActiveRecord::Schema.define(version: 20161026171944) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "password"
-    t.boolean  "is_active",       default: true
-    t.boolean  "is_archive",      default: false
+    t.boolean  "is_active",        default: true
+    t.boolean  "is_archive",       default: false
     t.string   "telephone"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "password_digest"
     t.string   "pin_code"
     t.integer  "client_id"
     t.string   "username"
-    t.boolean  "random_selected", default: false
-    t.boolean  "is_verified",     default: false
-    t.string   "pay_token",       default: ""
+    t.boolean  "random_selected",  default: false
+    t.boolean  "is_verified",      default: false
+    t.string   "pay_token",        default: ""
+    t.integer  "activation_count", default: 0
     t.index ["id"], name: "index_customers_on_id", using: :btree
   end
 

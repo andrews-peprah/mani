@@ -24,7 +24,11 @@ Rails.application.routes.draw do
 
   resources :clients, only: [:index]
   namespace :clients do
-    resources :customers
+    resources :customers do
+      member do
+        post "toggle"
+      end
+    end
     resources :hierarchies
     resources :reports
     resources :transactions
