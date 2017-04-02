@@ -21,7 +21,7 @@
 								<td><%= customer.fullname %></td>
 								<td><%= customer.parent.try(:fullname) %></td>
 								<td><% customer.children.each do |child| %>
-									<p><%= child.fullname %></p>
+									<p><%= child.fullname %> (<%= child.children.count %> links)</p>
 									<% end %>
 								</td>
 								<td><%= customer.level %></td>
@@ -32,10 +32,10 @@
 										style: "display:inline;",
 										onsubmit: "return confirm('Are you sure you want to change customers state?')" %>
 									<% if customer.is_verified %>
-										<input type="submit" class="btn btn-warning btn-xs" value="Disable" />
+										<button class="btn btn-success btn-xs" style="width:30px;height: 30px; font-weight: bolder;">&#10004;</button>
 									<% else %>
-										<input type="submit" class="btn btn-success btn-xs" value="Enable" />
-									<% end %> </form>| 
+									<button class="btn btn-danger btn-xs" style="width:30px;height: 30px;">&#10008;</button>
+									<% end %> </form> |
 									<a href="#" class="btn btn-danger btn-xs">Delete</a>
 								</td>
 							</tr>
