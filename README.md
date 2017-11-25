@@ -1,5 +1,5 @@
 # Mani
-Network Marketing and fund raising app
+Network Marketing and fund raising project.
 
 # Framework
 - Ruby on Rails
